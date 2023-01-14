@@ -19,6 +19,8 @@ export const handler: Handlers = {
     const res = {};
     const { id } = ctx.params;
 
+    console.log(ctx);
+
     let torrentAPI: unknown;
 
     let re = /^([A-Za-z0-9_-]{1,24})@(.*)$/gm;
