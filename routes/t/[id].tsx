@@ -34,7 +34,7 @@ export const handler: Handlers = {
     }
 
     console.log(torrentAPI.href);
-    
+
     let req = await fetch(torrentAPI.href, {
       headers: {
         "Accept": "application/activity+json",
@@ -53,12 +53,14 @@ export const handler: Handlers = {
 
     let attributedTo = "";
 
-    if (new URL(res.torrent.attributedTo).hostname ===
-       localURL.hostname {
-       attributedTo === res.torrent.attributedTo.replace(
-       new URL(res.torrent.attributedTo).hostname,
-       new URL(caterpillarSettings.apiURL).hostname
-       )
+    if (
+      new URL(res.torrent.attributedTo).hostname ===
+        localURL.hostname
+    ) {
+      attributedTo === res.torrent.attributedTo.replace(
+        new URL(res.torrent.attributedTo).hostname,
+        new URL(caterpillarSettings.apiURL).hostname,
+      );
     }
 
     req = await fetch(attributedTo, {
@@ -68,17 +70,19 @@ export const handler: Handlers = {
     res.user = await req.json();
 
     let localObj = {
-    	"likes": `${res.torrent.id}/likes`,
-	"dislikes": `${res.torrent.id}/dislikes`,
-	"replies": res.torrent.replies
-    }
+      "likes": `${res.torrent.id}/likes`,
+      "dislikes": `${res.torrent.id}/dislikes`,
+      "replies": res.torrent.replies,
+    };
 
     if (new URL(res.torrent.id).hostname === localURL.hostname) {
-       for (item in localObj) {
-       	   localObj[item] = localObj[item].replace(localURL.hostname, new URL(caterpillarSettings.apiURL).hostname)
-       }
+      for (item in localObj) {
+        localObj[item] = localObj[item].replace(
+          localURL.hostname,
+          new URL(caterpillarSettings.apiURL).hostname,
+        );
+      }
     }
-   
 
     let likes = await fetch(localObj.likes, {
       headers: { "Accept": "application/activity+json" },
