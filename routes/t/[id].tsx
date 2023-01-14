@@ -19,7 +19,7 @@ export const handler: Handlers = {
     const res = {};
     const { id } = ctx.params;
 
-    console.log(_.url);
+    let localURL = new URL(_.url);
 
     let torrentAPI: unknown;
 
@@ -31,7 +31,6 @@ export const handler: Handlers = {
     } else {
       torrentAPI = new URL(_.url);
       torrentAPI.hostname = new URL(caterpillarSettings.apiURL).hostname;
-
     }
 
     console.log(torrentAPI.href);
@@ -52,27 +51,50 @@ export const handler: Handlers = {
       return ctx.renderNotFound();
     }
 
-    req = await fetch(res.torrent.attributedTo, {
+    let attributedTo = "";
+
+    if (new URL(res.torrent.attributedTo).hostname ===
+       localURL.hostname {
+       attributedTo === res.torrent.attributedTo.replace(
+       new URL(res.torrent.attributedTo).hostname,
+       new URL(caterpillarSettings.apiURL).hostname
+       )
+    }
+
+    req = await fetch(attributedTo, {
       headers: { "Accept": "application/activity+json" },
     });
 
     res.user = await req.json();
 
-    let likes = await fetch(`${res.torrent.id}/likes`, {
+    let localObj = {
+    	"likes": `${res.torrent.id}/likes`,
+	"dislikes": `${res.torrent.id}/dislikes`,
+	"replies": res.torrent.replies
+    }
+
+    if (new URL(res.torrent.id).hostname === localURL.hostname) {
+       for (item in localObj) {
+       	   localObj[item] = localObj[item].replace(localURL.hostname, new URL(caterpillarSettings.apiURL).hostname)
+       }
+    }
+   
+
+    let likes = await fetch(localObj.likes, {
       headers: { "Accept": "application/activity+json" },
     });
 
     likes = await likes.json();
     res.torrent.likes = likes.totalItems;
 
-    let dislikes = await fetch(`${res.torrent.id}/dislikes`, {
+    let dislikes = await fetch(localObj.dislikes, {
       headers: { "Accept": "application/activity+json" },
     });
     dislikes = await dislikes.json();
     res.torrent.dislikes = dislikes.totalItems;
 
     // Comments
-    req = await fetch(res.torrent.replies, {
+    req = await fetch(localObj.replies, {
       headers: { "Accept": "application/activity+json" },
     });
     req = await req.json();
