@@ -65,6 +65,7 @@ export const handler: Handlers = {
 
     res.user = await req.json();
 
+    // This is so messy
     let localObj = {
       "likes": `${res.torrent.id}/likes`,
       "dislikes": `${res.torrent.id}/dislikes`,
