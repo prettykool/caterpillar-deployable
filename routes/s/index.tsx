@@ -28,36 +28,48 @@ export const handler = {
       }
 
       if (res.orderedItems[i].type === "Person") {
-        let f = await fetch(ensureURL(`${res.orderedItems[i].followers}`, _.url), {
-          headers: {
-            "Accept": "application/activity+json",
+        let f = await fetch(
+          ensureURL(`${res.orderedItems[i].followers}`, _.url),
+          {
+            headers: {
+              "Accept": "application/activity+json",
+            },
           },
-        });
+        );
 
         f = await f.json();
         res.orderedItems[i].followers = f.totalItems;
         continue;
       }
 
-      const likes = await fetch(ensureURL(`${res.orderedItems[i].id}/likes`, _.url), {
-        headers: {
-          "Accept": "application/activity+json",
+      const likes = await fetch(
+        ensureURL(`${res.orderedItems[i].id}/likes`, _.url),
+        {
+          headers: {
+            "Accept": "application/activity+json",
+          },
         },
-      });
+      );
       res.orderedItems[i].likes = (await likes.json()).totalItems;
 
-      const dislikes = await fetch(ensureURL(`${res.orderedItems[i].id}/dislikes`, _.url), {
-        headers: {
-          "Accept": "application/activity+json",
+      const dislikes = await fetch(
+        ensureURL(`${res.orderedItems[i].id}/dislikes`, _.url),
+        {
+          headers: {
+            "Accept": "application/activity+json",
+          },
         },
-      });
+      );
       res.orderedItems[i].dislikes = (await dislikes.json()).totalItems;
 
-      const actor = await fetch(ensureURL(res.orderedItems[i].attributedTo, _.url), {
-        headers: {
-          "Accept": "application/activity+json",
+      const actor = await fetch(
+        ensureURL(res.orderedItems[i].attributedTo, _.url),
+        {
+          headers: {
+            "Accept": "application/activity+json",
+          },
         },
-      });
+      );
       res.orderedItems[i].actor = await actor.json();
 
       if (res.orderedItems[i].orderedItems) {
@@ -74,11 +86,12 @@ export const handler = {
               "Accept": "application/activity+json",
             },
           })).json();
-          const dislikes = await (await fetch(ensureURL(`${url}/dislikes`, _.url), {
-            headers: {
-              "Accept": "application/activity+json",
-            },
-          })).json();
+          const dislikes =
+            await (await fetch(ensureURL(`${url}/dislikes`, _.url), {
+              headers: {
+                "Accept": "application/activity+json",
+              },
+            })).json();
 
           const u = new URL(url);
 

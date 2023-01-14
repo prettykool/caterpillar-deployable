@@ -40,8 +40,6 @@ export const handler: Handlers = {
       },
     });
 
-    console.log(req);
-
     res.torrent = await req.json();
 
     if (res.torrent.err) {
