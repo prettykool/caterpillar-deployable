@@ -6,6 +6,7 @@ import { ListItemList } from "../../components/MetaListItem.tsx";
 import { UserCard } from "../../components/UserCard.tsx";
 import Footer from "../../components/Footer.tsx";
 import Header from "../../islands/Header.tsx";
+import { ensureURL } from "../../utils/ensureURL.ts";
 
 export const handler = {
   async GET(_, ctx) {
@@ -27,7 +28,7 @@ export const handler = {
       }
 
       if (res.orderedItems[i].type === "Person") {
-        let f = await fetch(`${res.orderedItems[i].followers}`, {
+        let f = await fetch(ensureURL(`${res.orderedItems[i].followers}`, _.url), {
           headers: {
             "Accept": "application/activity+json",
           },
@@ -38,21 +39,21 @@ export const handler = {
         continue;
       }
 
-      const likes = await fetch(`${res.orderedItems[i].id}/likes`, {
+      const likes = await fetch(ensureURL(`${res.orderedItems[i].id}/likes`, _.url), {
         headers: {
           "Accept": "application/activity+json",
         },
       });
       res.orderedItems[i].likes = (await likes.json()).totalItems;
 
-      const dislikes = await fetch(`${res.orderedItems[i].id}/dislikes`, {
+      const dislikes = await fetch(ensureURL(`${res.orderedItems[i].id}/dislikes`, _.url), {
         headers: {
           "Accept": "application/activity+json",
         },
       });
       res.orderedItems[i].dislikes = (await dislikes.json()).totalItems;
 
-      const actor = await fetch(res.orderedItems[i].attributedTo, {
+      const actor = await fetch(ensureURL(res.orderedItems[i].attributedTo, _.url), {
         headers: {
           "Accept": "application/activity+json",
         },
@@ -61,19 +62,19 @@ export const handler = {
 
       if (res.orderedItems[i].orderedItems) {
         for (const url of res.orderedItems[i].orderedItems) {
-          let subObj = await fetch(url, {
+          let subObj = await fetch(ensureURL(url, _.url), {
             headers: {
               "Accept": "application/activity+json",
             },
           });
           subObj = await subObj.json();
 
-          const likes = await (await fetch(`${url}/likes`, {
+          const likes = await (await fetch(ensureURL(`${url}/likes`, _.url), {
             headers: {
               "Accept": "application/activity+json",
             },
           })).json();
-          const dislikes = await (await fetch(`${url}/dislikes`, {
+          const dislikes = await (await fetch(ensureURL(`${url}/dislikes`, _.url), {
             headers: {
               "Accept": "application/activity+json",
             },
