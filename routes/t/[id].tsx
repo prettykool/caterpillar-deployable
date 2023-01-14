@@ -73,7 +73,7 @@ export const handler: Handlers = {
     };
 
     if (new URL(res.torrent.id).hostname === localURL.hostname) {
-      for (item in localObj) {
+      for (let item in localObj) {
         localObj[item] = localObj[item].replace(
           localURL.hostname,
           new URL(caterpillarSettings.apiURL).hostname,
