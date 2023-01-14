@@ -33,8 +33,6 @@ export const handler: Handlers = {
       torrentAPI.hostname = new URL(caterpillarSettings.apiURL).hostname;
     }
 
-    console.log(torrentAPI.href);
-
     let req = await fetch(torrentAPI.href, {
       headers: {
         "Accept": "application/activity+json",
@@ -45,19 +43,17 @@ export const handler: Handlers = {
 
     res.torrent = await req.json();
 
-    console.log(res.torrent);
-
     if (res.torrent.err) {
       return ctx.renderNotFound();
     }
 
-    let attributedTo = "";
+    let attributedTo = res.torrent.attributedTo;
 
     if (
       new URL(res.torrent.attributedTo).hostname ===
         localURL.hostname
     ) {
-      attributedTo === res.torrent.attributedTo.replace(
+      attributedTo = res.torrent.attributedTo.replace(
         new URL(res.torrent.attributedTo).hostname,
         new URL(caterpillarSettings.apiURL).hostname,
       );
