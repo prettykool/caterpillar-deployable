@@ -28,6 +28,8 @@ export const handler: Handlers = {
       torrentAPI = new URL(`/t/${vals[1]}`, `http://${vals[2]}`);
     } else {
       torrentAPI = new URL(_.url);
+      torrentAPI.hostname = caterpillarSettings.apiURL;
+
     }
 
     console.log(torrentAPI.href);
