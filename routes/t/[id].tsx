@@ -19,7 +19,7 @@ export const handler: Handlers = {
     const res = {};
     const { id } = ctx.params;
 
-    console.log(ctx);
+    console.log(_);
 
     let torrentAPI: unknown;
 
