@@ -30,13 +30,19 @@ export const handler: Handlers = {
       torrentAPI = new URL(_.url);
     }
 
+    console.log(torrentAPI.href);
+    
     let req = await fetch(torrentAPI.href, {
       headers: {
         "Accept": "application/activity+json",
       },
     });
 
+    console.log(req);
+
     res.torrent = await req.json();
+
+    console.log(res.torrent);
 
     if (res.torrent.err) {
       return ctx.renderNotFound();
