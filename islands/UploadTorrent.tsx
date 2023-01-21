@@ -29,7 +29,7 @@ export default function UploadTorrent() {
     token = await token.match("/login");
     token = await token.text();
 
-    const API = new URL("/t/", caterpillarSettings.apiURL);
+    const API = new URL("/t/", window.location.origin);
 
     let r = await fetch(API.href, {
       method: "POST",
