@@ -43,7 +43,7 @@ export async function handler(
   }
   const resp = await ctx.next();
 
-  resp.headers.set("Access-Control-Allow-Origin", "*");
+  resp.headers.set("Referrer-Policy","no-referrer");
   resp.headers.set("Connection", "keep-alive");
   resp.headers.set("Access-Control-Allow-Origin", "*");
   resp.headers.set(
