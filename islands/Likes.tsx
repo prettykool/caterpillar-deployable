@@ -7,18 +7,14 @@ export default function Likes(props: {
   total: number;
 }) {
   const handleVote = async () => {
-    const objURL = props.href ??
-      (new URL(
-        new URL(window.location.href).pathname,
-        caterpillarSettings.apiURL,
-      )).href;
+    const objURL = props.href ?? window.location.href;
 
     let token = await caches.open("parasite");
     token = await token.match("/login");
     token = await token.text();
 
     const r = await fetch(
-      (new URL("/x/like", caterpillarSettings.apiURL)).href,
+      (new URL("/x/like", window.location.origin)).href,
       {
         method: "POST",
         headers: {
