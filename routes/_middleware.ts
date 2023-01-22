@@ -38,6 +38,7 @@ export async function handler(
     }
     
     console.log(params)
+    console.log(params.body)
 
     const res = await fetch(u.href, params);
 
