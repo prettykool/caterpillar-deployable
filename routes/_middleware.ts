@@ -34,12 +34,14 @@ export async function handler(
     };
 
     if (req.method !== "GET") {
-      params.body = await req.text();
+      params.body = await req.json();
     }
     
     console.log(params)
     console.log(params.body)
 
+    params.body = JSON.stringify(params.body)
+    
     const res = await fetch(u.href, params);
 
     return res;
