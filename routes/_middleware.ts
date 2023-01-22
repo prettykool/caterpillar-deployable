@@ -36,6 +36,8 @@ export async function handler(
     if (req.method !== "GET") {
       params.body = await req.text();
     }
+    
+    console.log(params)
 
     const res = await fetch(u.href, params);
 
