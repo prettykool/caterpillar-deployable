@@ -13,6 +13,13 @@ export default function Likes(props: {
     token = await token.match("/login");
     token = await token.text();
 
+    let likeObj = {
+          "type": "Like",
+          "object": objURL,
+        }
+    
+    console.log(likeObj)
+    
     const r = await fetch(
       (new URL("/x/like", window.location.origin)).href,
       {
@@ -22,10 +29,7 @@ export default function Likes(props: {
           "Authorization": `Bearer ${token}`,
           "Accept": "application/activity+json",
         },
-        body: JSON.stringify({
-          "type": "Like",
-          "object": objURL,
-        }),
+        body: JSON.stringify(likeObj),
       },
     );
 
